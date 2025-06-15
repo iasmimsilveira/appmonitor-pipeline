@@ -4,19 +4,28 @@ on:
   workflow_dispatch:
 
 jobs:
-  diagnostic:
+  diagnostico:
     runs-on: ubuntu-latest
+    env:
+      APP_ENV: ${{ vars.APP_ENV }}
+      API_KEY: ${{ secrets.API_KEY }}
     steps:
-      - name: Verificar APP_ENV
-        if: ${{ env.APP_ENV == '' }}
-        run: echo "::error::APP_ENV não está definido!"
-
-      - name: Verificar API_KEY
-        if: ${{ secrets.API_KEY == '' }}
-        run: echo "::error::API_KEY não está definido!"
-
-      - name: Registrar sugestões no summary
+      - name: Verificar se APP_ENV está definida
         run: |
-          echo "## 🛠️ Diagnóstico do Pipeline" >> $GITHUB_STEP_SUMMARY
-          echo "- Verifique se APP_ENV está configurado nas variáveis de ambiente." >> $GITHUB_STEP_SUMMARY
-          echo "- Confirme se o segredo API_KEY foi definido no repositório." >> $GITHUB_STEP_SUMMARY
+          if [ -z "$APP_ENV" ]; then
+            echo "::error::APP_ENV não está definida"
+            exit 1
+          fi
+
+      - name: Verificar se API_KEY está definida
+        run: |
+          if [ -z "$API_KEY" ]; then
+            echo "::error::API_KEY não está definida"
+            exit 1
+          fi
+
+      - name: Diagnóstico concluído
+        run: |
+          echo "✅ Todas as variáveis obrigatórias estão definidas"
+          echo "### Diagnóstico OK ✅" >> $GITHUB_STEP_SUMMARY
+          echo "Variáveis encontradas com sucesso." >> $GITHUB_STEP_SUMMARY
