@@ -1,6 +1,6 @@
 # AppMonitor Pipeline
 
-Este repositório simula uma estrutura de pipelines DevOps para monitoração de aplicações web, com foco em boas práticas de integração contínua, segurança e monitoramento automatizado.
+Repositório que simula uma estrutura de pipelines DevOps para monitoração de aplicações web, com foco em boas práticas de integração contínua, segurança e monitoramento automatizado.
 
 ---
 
