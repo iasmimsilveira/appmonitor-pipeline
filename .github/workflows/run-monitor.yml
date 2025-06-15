@@ -10,13 +10,16 @@ jobs:
       APP_ENV: ${{ vars.APP_ENV }}
     steps:
       - name: Mostrar variável de ambiente
-        run: echo "Ambiente de execução: $APP_ENV"
+        run:
+          echo "Ambiente de execução: ${{ env.APP_ENV }}"
+
 
   usar-vars:
     runs-on: ubuntu-latest
     steps:
       - name: Acessar SUPPORT_EMAIL via vars
-        run: echo "Contato de suporte: ${{ vars.SUPPORT_EMAIL }}"
+        run:
+          echo "Contato de suporte: ${{ vars.SUPPORT_EMAIL }}"
 
   usar-secrets:
     runs-on: ubuntu-latest
