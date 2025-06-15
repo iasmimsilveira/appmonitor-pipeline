@@ -8,22 +8,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Verificar APP_ENV
-        if: ${{ !env.APP_ENV }}
-        run: |
-          echo "::error::Variável APP_ENV não está definida."
-          exit 1
+        if: ${{ env.APP_ENV == '' }}
+        run: echo "::error::APP_ENV não está definido!"
 
       - name: Verificar API_KEY
-        if: ${{ !secrets.API_KEY }}
-        run: |
-          echo "::error::Segredo API_KEY não está definido."
-          exit 1
+        if: ${{ secrets.API_KEY == '' }}
+        run: echo "::error::API_KEY não está definido!"
 
-      - name: Diagnóstico OK
-        run: echo "Todas as variáveis obrigatórias estão presentes."
-
-      - name: Gerar Resumo de Diagnóstico
+      - name: Registrar sugestões no summary
         run: |
-          echo "## Diagnóstico do Pipeline" >> $GITHUB_STEP_SUMMARY
-          echo "- Variáveis obrigatórias verificadas" >> $GITHUB_STEP_SUMMARY
-          echo "- Se ocorrerem falhas, revise as definições em Settings > Secrets ou Variables" >> $GITHUB_STEP_SUMMARY
+          echo "## 🛠️ Diagnóstico do Pipeline" >> $GITHUB_STEP_SUMMARY
+          echo "- Verifique se APP_ENV está configurado nas variáveis de ambiente." >> $GITHUB_STEP_SUMMARY
+          echo "- Confirme se o segredo API_KEY foi definido no repositório." >> $GITHUB_STEP_SUMMARY
