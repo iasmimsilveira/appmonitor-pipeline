@@ -1,0 +1,29 @@
+name: Diagnóstico Automatizado
+
+on:
+  workflow_dispatch:
+
+jobs:
+  diagnostic:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verificar APP_ENV
+        if: ${{ !env.APP_ENV }}
+        run: |
+          echo "::error::Variável APP_ENV não está definida."
+          exit 1
+
+      - name: Verificar API_KEY
+        if: ${{ !secrets.API_KEY }}
+        run: |
+          echo "::error::Segredo API_KEY não está definido."
+          exit 1
+
+      - name: Diagnóstico OK
+        run: echo "Todas as variáveis obrigatórias estão presentes."
+
+      - name: Gerar Resumo de Diagnóstico
+        run: |
+          echo "## Diagnóstico do Pipeline" >> $GITHUB_STEP_SUMMARY
+          echo "- Variáveis obrigatórias verificadas" >> $GITHUB_STEP_SUMMARY
+          echo "- Se ocorrerem falhas, revise as definições em Settings > Secrets ou Variables" >> $GITHUB_STEP_SUMMARY
