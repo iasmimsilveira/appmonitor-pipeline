@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout código
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Validar sintaxe do script
         run: bash -n status-check.sh
@@ -30,13 +30,13 @@ jobs:
     needs: [validate, test]
     steps:
       - name: Checkout código
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Criar arquivo ZIP
         run: zip -r report.zip status-check.sh
 
       - name: Fazer upload do artefato
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: relatorio-status
           path: report.zip
