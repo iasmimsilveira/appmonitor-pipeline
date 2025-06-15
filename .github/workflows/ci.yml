@@ -1,0 +1,40 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v3
+
+      - name: Validar sintaxe do script
+        run: bash -n status-check.sh
+
+  test:
+    runs-on: ubuntu-latest
+    needs: validate
+    steps:
+      - name: Simular execução de testes
+        run: echo "Running tests" && exit 0
+
+  package:
+    runs-on: ubuntu-latest
+    needs: [validate, test]
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v3
+
+      - name: Criar arquivo ZIP
+        run: zip -r report.zip status-check.sh
+
+      - name: Fazer upload do artefato
+        uses: actions/upload-artifact@v3
+        with:
+          name: relatorio-status
+          path: report.zip
+
